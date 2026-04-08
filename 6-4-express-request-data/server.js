@@ -1,3 +1,17 @@
+// Param middleware for userId
+app.param("userId", (req, res, next, userId) => {
+  const num = Number(userId);
+  if (!Number.isFinite(num) || num <= 0) {
+    return res.status(400).json({ ok: false, error: "userId must be positive number" });
+  }
+  req.userIdNum = num;
+  next();
+});
+
+// /users/:userId route
+app.get("/users/:userId", (req, res) => {
+  res.json({ ok: true, userId: req.userIdNum });
+});
 import express from "express";
 const app = express();
 
